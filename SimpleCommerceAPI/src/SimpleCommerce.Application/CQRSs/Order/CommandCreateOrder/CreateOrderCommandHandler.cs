@@ -27,7 +27,7 @@ namespace SimpleCommerce.Application.CQRSs.Order.CommandCreateOrder
         {
             int userID = _tokenUtility.DecodeTokenInRequest().UserID;
 
-            OrderEntity orderEntity = new(userID);
+            OrderEntity orderEntity = new(userID, request.AddressID);
             orderEntity = _orderRepository.Add(orderEntity);
 
             int effectedRows = _orderRepository.SaveChanges();

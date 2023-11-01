@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using SimpleCommerce.Domain.Entities.Address;
 using SimpleCommerce.Domain.Entities.Order;
 using SimpleCommerce.Domain.Entities.Product;
 using SimpleCommerce.Domain.Entities.User;
@@ -23,6 +24,10 @@ namespace TransportGlobal.Infrastructure.Context
         public DbSet<OrderEntity> Orders { get; set; }
 
         public DbSet<OrderItemEntity> OrderItems { get; set; }
+        #endregion
+
+        #region Address Bounded Context DbSets
+        public DbSet<AddressEntity> Addresses { get; set; }
         #endregion
 
         public SimpleCommerceDBContext(DbContextOptions<SimpleCommerceDBContext> options) : base(options)

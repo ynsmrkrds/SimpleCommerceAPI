@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using SimpleCommerce.Application.CQRSs.Address.CommandCreateAddress;
 using SimpleCommerce.Application.CQRSs.User.CommandCreateUser;
 using SimpleCommerce.Application.Helpers;
+using SimpleCommerce.Domain.Entities.Address;
 using SimpleCommerce.Domain.Entities.User;
 using TransportGlobal.Application.CQRSs.UserContextCQRSs.CommandUpdateUser;
 
@@ -14,6 +16,13 @@ namespace TransportGlobal.Application.Mappings
             CreateMap<CreateUserCommandRequest, UserEntity>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => EncryptionHelper.Encrypt(src.Password)))
                 .ConstructUsing(src => new UserEntity(src.Name, src.Surname, src.Email, src.Password));
+
+            CreateMap<UpdateUserCommandRequest, UserEntity>();
+            #endregion
+
+            #region Address Bounded Context Mappings
+            CreateMap<CreateAddressCommandRequest, AddressEntity>()
+                .ConstructUsing(src => new AddressEntity(0, src.Title, src.City, src.District, src.Street, src.Address));
 
             CreateMap<UpdateUserCommandRequest, UserEntity>();
             #endregion

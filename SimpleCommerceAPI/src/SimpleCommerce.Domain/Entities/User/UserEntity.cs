@@ -1,4 +1,5 @@
-﻿using SimpleCommerce.Domain.Entities.Order;
+﻿using SimpleCommerce.Domain.Entities.Address;
+using SimpleCommerce.Domain.Entities.Order;
 using SimpleCommerce.Domain.SeedWorks;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,6 +19,8 @@ namespace SimpleCommerce.Domain.Entities.User
         public string PasswordHash { get; set; }
 
         public List<OrderEntity> Orders { get; set; } = new List<OrderEntity>();
+
+        public List<AddressEntity> Addresses { get; set; } = new List<AddressEntity>();
 
         public UserEntity(string name, string surname, string email, string passwordHash)
         {

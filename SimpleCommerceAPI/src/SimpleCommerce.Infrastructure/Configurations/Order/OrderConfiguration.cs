@@ -13,6 +13,11 @@ namespace SimpleCommerce.Infrastructure.Configurations.Order
                 .HasForeignKey(x => x.UserID)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder.HasOne(x => x.Address)
+                .WithMany(x => x.Orders)
+                .HasForeignKey(x => x.AddressID)
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.HasMany(x => x.Items)
                 .WithOne(x => x.Order)
                 .HasForeignKey(x => x.OrderID)

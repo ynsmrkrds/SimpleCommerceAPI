@@ -15,6 +15,7 @@ namespace SimpleCommerce.Infrastructure.Repositories.Order
         {
             return GetAll()
                 .Include(x => x.User)
+                .Include(x => x.Address)
                 .Include(x => x.Items)
                 .ThenInclude(x => x.Product)
                 .Where(x => x.UserID == userID);

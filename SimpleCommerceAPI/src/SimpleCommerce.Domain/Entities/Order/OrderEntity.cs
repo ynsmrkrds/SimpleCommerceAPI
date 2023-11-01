@@ -1,4 +1,5 @@
-﻿using SimpleCommerce.Domain.Entities.User;
+﻿using SimpleCommerce.Domain.Entities.Address;
+using SimpleCommerce.Domain.Entities.User;
 using SimpleCommerce.Domain.SeedWorks;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,11 +12,17 @@ namespace SimpleCommerce.Domain.Entities.Order
 
         public UserEntity? User { get; set; }
 
+        [ForeignKey(nameof(Address))]
+        public int AddressID { get; set; }
+
+        public AddressEntity? Address { get; set; }
+
         public List<OrderItemEntity> Items { get; set; } = new List<OrderItemEntity>();
 
-        public OrderEntity(int userID)
+        public OrderEntity(int userID, int addressID)
         {
             UserID = userID;
+            AddressID = addressID;
         }
 
         public decimal TotalPrice => Items.Select(item => item.Product!.Price * item.Quantity).Sum();

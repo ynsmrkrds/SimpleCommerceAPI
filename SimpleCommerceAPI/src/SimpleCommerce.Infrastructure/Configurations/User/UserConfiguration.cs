@@ -12,6 +12,11 @@ namespace SimpleCommerce.Infrastructure.Configurations.User
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserID)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasMany(x => x.Addresses)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserID)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
