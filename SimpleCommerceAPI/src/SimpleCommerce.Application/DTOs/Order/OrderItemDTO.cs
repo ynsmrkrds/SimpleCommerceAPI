@@ -8,13 +8,10 @@ namespace SimpleCommerce.Application.DTOs.Order
 
         public int Quantity { get; set; }
 
-        public decimal UnitPrice { get; set; }
-
-        public OrderItemDTO(int id, DateTime createdDate, ProductDTO product, int quantity, decimal unitPrice) : base(id, createdDate)
+        public OrderItemDTO(int id, DateTime createdDate, ProductDTO product, int quantity) : base(id, createdDate)
         {
             Product = product;
             Quantity = quantity;
-            UnitPrice = unitPrice;
         }
     }
 }

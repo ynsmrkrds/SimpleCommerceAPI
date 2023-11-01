@@ -18,14 +18,11 @@ namespace SimpleCommerce.Domain.Entities.Order
 
         public int Quantity { get; set; }
 
-        public decimal UnitPrice { get; set; }
-
-        public OrderItemEntity(int orderID, int productID, int quantity, decimal unitPrice)
+        public OrderItemEntity(int orderID, int productID, int quantity)
         {
             OrderID = orderID;
             ProductID = productID;
             Quantity = quantity;
-            UnitPrice = unitPrice;
         }
     }
 }

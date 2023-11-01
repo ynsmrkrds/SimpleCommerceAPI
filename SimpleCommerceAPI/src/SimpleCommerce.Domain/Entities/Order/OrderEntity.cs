@@ -18,11 +18,19 @@ namespace SimpleCommerce.Domain.Entities.Order
             UserID = userID;
         }
 
-        public decimal TotalPrice => Items.Select(item => item.UnitPrice * item.Quantity).Sum();
+        public decimal TotalPrice => Items.Select(item => item.Product!.Price * item.Quantity).Sum();
 
         public void AddItem(OrderItemEntity item)
         {
-            Items.Add(item);
+            OrderItemEntity? itemInList = Items.Where(x => x.ProductID == item.ProductID).FirstOrDefault();
+            if (itemInList == null)
+            {
+                Items.Add(item);
+            }
+            else
+            {
+                itemInList.Quantity++;
+            }
         }
 
         public void RemoveItem(OrderItemEntity item)
