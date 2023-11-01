@@ -8,13 +8,14 @@ namespace SimpleCommerce.Infrastructure.Seeds.User
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
-            string passwordHash = "wEXC+zsV9xjSjrlsyqK58SjE3IasyI327aF25jotP7/98elqf/+cd+KzKDv2PSPBaeSE0/8cPOnOJYtkZ3y1Eg=="; // 123456
+            string passwordHash = "f88kKg9BTfLRX79/OCyi3SkMT+9tp6HUkpNDKb0B1i3wicsu7ibl3Gx1WTiGqQMI9f5IkY4nABU+L/XVNWKg5A=="; // 123456
 
-            UserEntity shipperUser = new("John", "Doe", "john.doe@gmail.com", passwordHash)
+            UserEntity user = new("John", "Doe", "john.doe@gmail.com", passwordHash)
             {
                 ID = 1
             };
-            builder.HasData(shipperUser);
+
+            builder.HasData(user);
         }
     }
 }
