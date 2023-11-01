@@ -9,7 +9,7 @@ namespace TransportGlobal.Application.DTOs.CQRSDTOs
 
         public int TotalCount { get; set; }
 
-        public BaseQueryListResponse(IEnumerable<T> list, PaginationModel paginationModel)
+        protected BaseQueryListResponse(IEnumerable<T> list, PaginationModel paginationModel)
         {
             List = list.WithPagination(paginationModel).ToList();
             TotalCount = list.Count();
