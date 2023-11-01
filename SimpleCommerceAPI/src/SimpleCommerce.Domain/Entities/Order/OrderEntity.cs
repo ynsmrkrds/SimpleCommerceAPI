@@ -33,6 +33,14 @@ namespace SimpleCommerce.Domain.Entities.Order
             }
         }
 
+        public void AddItems(List<OrderItemEntity> items)
+        {
+            foreach (OrderItemEntity item in items)
+            {
+                AddItem(item);
+            }
+        }
+
         public void RemoveItem(OrderItemEntity item)
         {
             Items.Remove(item);
