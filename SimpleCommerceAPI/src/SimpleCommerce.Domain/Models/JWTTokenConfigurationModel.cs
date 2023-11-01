@@ -1,6 +1,6 @@
 ﻿namespace SimpleCommerce.Domain.Models
 {
-    public class TokenConfigurationModel
+    public class JWTTokenConfigurationModel
     {
         public string Issuer { get; set; }
 
@@ -10,7 +10,7 @@
 
         public string Key { get; set; }
 
-        public TokenConfigurationModel(string issuer, string audience, int durationInMinutes, string key)
+        public JWTTokenConfigurationModel(string issuer, string audience, int durationInMinutes, string key)
         {
             Issuer = issuer;
             Audience = audience;

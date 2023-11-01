@@ -6,7 +6,7 @@
 
         public string Description { get; init; }
 
-        public ProductCategoryDTO(int id, DateTime createdDate, bool isDeleted, string name, string description) : base(id, createdDate, isDeleted)
+        public ProductCategoryDTO(int id, DateTime createdDate, string name, string description) : base(id, createdDate)
         {
             Name = name;
             Description = description;

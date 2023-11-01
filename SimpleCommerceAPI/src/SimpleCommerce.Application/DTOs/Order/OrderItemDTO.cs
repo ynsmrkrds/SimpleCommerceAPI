@@ -10,7 +10,7 @@ namespace SimpleCommerce.Application.DTOs.Order
 
         public decimal UnitPrice { get; set; }
 
-        public OrderItemDTO(int id, DateTime createdDate, bool isDeleted, ProductDTO product, int quantity, decimal unitPrice) : base(id, createdDate, isDeleted)
+        public OrderItemDTO(int id, DateTime createdDate, ProductDTO product, int quantity, decimal unitPrice) : base(id, createdDate)
         {
             Product = product;
             Quantity = quantity;

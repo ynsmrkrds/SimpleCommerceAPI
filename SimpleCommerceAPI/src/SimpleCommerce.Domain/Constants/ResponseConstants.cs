@@ -20,6 +20,8 @@ namespace SimpleCommerce.Domain.Constants
 
         public static readonly ResponseConstantModel EmailOrPasswordIncorrect = new(false, "Email or password is incorrect!");
 
+        public static readonly ResponseConstantModel CurrentPasswordIncorrect = new(false, "The Current password is incorrect!");
+
         public static readonly ResponseConstantModel ExistsUserWithSameEmail = new(false, "A user with the same email address already exists!");
     }
 }

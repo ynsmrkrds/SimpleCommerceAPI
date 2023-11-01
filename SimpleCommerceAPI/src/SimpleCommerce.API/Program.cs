@@ -1,8 +1,9 @@
-using SimpleCommerce.Application.Expansions.Registarions;
-using SimpleCommerce.Infrastructure.Expansions.Registrations;
+using SimpleCommerce.API.Expansions.Extensions;
+using SimpleCommerce.Application.Expansions.Extensions;
+using SimpleCommerce.Infrastructure.Expansions.Extensions;
+using TransportGlobal.API.Extensions.Registrations;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 
@@ -10,11 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Extend services with application layer services
-builder.Services.AddApplicationServices(builder.Configuration);
+// Extend services with application layer
+builder.Services.AddApplicationLayer(builder.Configuration);
 
-// Extend services with infrastructure layer services
-builder.Services.AddInfrastructureServices(builder.Configuration);
+// Extend services with infrastructure layer
+builder.Services.AddInfrastructureLayer(builder.Configuration);
+
+// Extend services with api layer
+builder.Services.AddAPILayer(builder.Configuration);
 
 var app = builder.Build();
 
@@ -26,6 +30,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Extend app with api layer
+app.AddAPILayer();
 
 app.UseAuthorization();
 

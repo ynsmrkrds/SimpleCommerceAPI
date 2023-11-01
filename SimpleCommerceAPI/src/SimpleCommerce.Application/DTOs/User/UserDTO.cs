@@ -8,7 +8,7 @@
 
         public string Email { get; init; }
 
-        public UserDTO(int id, DateTime createdDate, bool isDeleted, string name, string surname, string email) : base(id, createdDate, isDeleted)
+        public UserDTO(int id, DateTime createdDate, string name, string surname, string email) : base(id, createdDate)
         {
             Name = name;
             Surname = surname;

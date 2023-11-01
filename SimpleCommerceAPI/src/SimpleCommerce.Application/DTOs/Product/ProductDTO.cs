@@ -14,7 +14,7 @@
 
         public string ImageUrl { get; init; }
 
-        public ProductDTO(int id, DateTime createdDate, bool isDeleted, string name, string description, decimal price, int stockQuantity, ProductCategoryDTO category, string imageUrl) : base(id, createdDate, isDeleted)
+        public ProductDTO(int id, DateTime createdDate, string name, string description, decimal price, int stockQuantity, ProductCategoryDTO category, string imageUrl) : base(id, createdDate)
         {
             Name = name;
             Description = description;
