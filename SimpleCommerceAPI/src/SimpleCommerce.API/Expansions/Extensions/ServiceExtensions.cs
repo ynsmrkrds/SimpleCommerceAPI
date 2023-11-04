@@ -18,6 +18,8 @@ namespace TransportGlobal.API.Extensions.Registrations
 
             services.SetSwagger();
 
+            services.RegisterCors();
+
             return services;
         }
 
@@ -97,6 +99,22 @@ namespace TransportGlobal.API.Extensions.Registrations
                         new List<string>()
                     }
                 });
+            });
+
+            return services;
+        }
+
+        private static IServiceCollection RegisterCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
             });
 
             return services;
