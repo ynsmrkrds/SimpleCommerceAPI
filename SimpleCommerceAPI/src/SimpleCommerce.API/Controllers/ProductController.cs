@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SimpleCommerce.Application.CQRSs.Product.QueryGetProductById;
 using SimpleCommerce.Application.CQRSs.Product.QueryGetProducts;
 using SimpleCommerce.Domain.Models;
 using TransportGlobal.API.Controllers;
@@ -21,6 +22,14 @@ namespace SimpleCommerce.API.Controllers
         {
             GetProductsQueryResponse queryResponse = await _mediator.Send(new GetProductsQueryRequest(new PaginationModel(page, size)));
             return CreateActionResult(queryResponse);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            GetProductByIdQueryResponse queryResponse = await _mediator.Send(new GetProductByIdQueryRequest(id));
+            return CreateActionResult(queryResponse.Item);
         }
     }
 }
