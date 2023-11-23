@@ -19,7 +19,9 @@ namespace SimpleCommerce.Application.CQRSs.User.QueryGetUsers
 
         public Task<GetUsersQueryResponse> Handle(GetUsersQueryRequest request, CancellationToken cancellationToken)
         {
-            IEnumerable<UserDTO> dtos = _mapper.Map<IEnumerable<UserDTO>>(_userManager.Users);
+            IEnumerable<UserEntity> users = _userManager.Users.Where(x => x.Email != "admin@xyz.com");
+
+            IEnumerable<UserDTO> dtos = _mapper.Map<IEnumerable<UserDTO>>(users);
 
             return Task.FromResult(new GetUsersQueryResponse(dtos, request.Pagination));
         }
