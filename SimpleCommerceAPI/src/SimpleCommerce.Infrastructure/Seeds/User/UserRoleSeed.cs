@@ -15,6 +15,14 @@ namespace SimpleCommerce.Infrastructure.Seeds.User
             }; 
 
             builder.HasData(adminUserRole);
+
+            IdentityUserRole<string> normalUserRole = new()
+            {
+                UserId = "e2232222-a4ff-4ba6-bc41-327974fbdf4e",
+                RoleId = "c7b013f0-5201-4317-abd8-c211f91b7330",
+            };
+
+            builder.HasData(normalUserRole);
         }
     }
 }

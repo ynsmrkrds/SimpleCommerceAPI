@@ -20,6 +20,17 @@ namespace SimpleCommerce.Infrastructure.Seeds.User
             adminUser.PasswordHash = passwordHash;
 
             builder.HasData(adminUser);
+
+            UserEntity normalUser = new("John", "DOE", "john.doe@xyz.com")
+            {
+                Id = "e2232222-a4ff-4ba6-bc41-327974fbdf4e",
+            };
+
+            passwordHash = passwordHasher.HashPassword(normalUser, "123456");
+
+            normalUser.PasswordHash = passwordHash;
+
+            builder.HasData(normalUser);
         }
     }
 }
