@@ -1,5 +1,6 @@
 using SimpleCommerce.API.Expansions.Extensions;
 using SimpleCommerce.Application.Expansions.Extensions;
+using SimpleCommerce.Application.Utilities.Token;
 using SimpleCommerce.Infrastructure.Expansions.Extensions;
 using TransportGlobal.API.Extensions.Registrations;
 
@@ -34,6 +35,7 @@ app.UseHttpsRedirection();
 // Extend app with api layer
 app.AddAPILayer();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

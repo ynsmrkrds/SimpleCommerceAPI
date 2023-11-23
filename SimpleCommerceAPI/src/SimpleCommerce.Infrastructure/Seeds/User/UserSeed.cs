@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SimpleCommerce.Domain.Entities.User;
 
@@ -8,14 +9,17 @@ namespace SimpleCommerce.Infrastructure.Seeds.User
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
-            string passwordHash = "f88kKg9BTfLRX79/OCyi3SkMT+9tp6HUkpNDKb0B1i3wicsu7ibl3Gx1WTiGqQMI9f5IkY4nABU+L/XVNWKg5A=="; // 123456
-
-            UserEntity user = new("John", "Doe", "john.doe@gmail.com", passwordHash)
+            UserEntity adminUser = new("Admin", "ADMIN", "admin@xyz.com")
             {
-                ID = 1
+                Id = "b74ddd14-6340-4840-95c2-db12554843e5",
             };
 
-            builder.HasData(user);
+            PasswordHasher<UserEntity> passwordHasher = new();
+            string passwordHash = passwordHasher.HashPassword(adminUser, "123456");
+
+            adminUser.PasswordHash = passwordHash;
+
+            builder.HasData(adminUser);
         }
     }
 }

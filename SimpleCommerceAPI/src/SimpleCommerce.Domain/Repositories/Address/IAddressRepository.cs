@@ -4,8 +4,8 @@ namespace SimpleCommerce.Domain.Repositories.Address
 {
     public interface IAddressRepository : IRepository<AddressEntity>
     {
-        bool IsExistsWithSameTitle(string title, int userID);
+        bool IsExistsWithSameTitle(string title, string userID);
 
-        IEnumerable<AddressEntity> GetAllByUserID(int userID);
+        IEnumerable<AddressEntity> GetAllByUserID(string userID);
     }
 }

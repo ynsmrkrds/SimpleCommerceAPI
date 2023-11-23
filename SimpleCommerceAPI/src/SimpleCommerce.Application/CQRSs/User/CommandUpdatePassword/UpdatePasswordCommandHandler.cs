@@ -1,38 +1,38 @@
 ﻿using MediatR;
-using SimpleCommerce.Application.Helpers;
+using Microsoft.AspNetCore.Identity;
 using SimpleCommerce.Application.Utilities.Token;
 using SimpleCommerce.Domain.Constants;
 using SimpleCommerce.Domain.Entities.User;
 using SimpleCommerce.Domain.Exceptions;
-using SimpleCommerce.Domain.Repositories.User;
 
 namespace TransportGlobal.Application.CQRSs.UserContextCQRSs.CommandUpdatePassword
 {
     public class UpdatePasswordCommandHandler : IRequestHandler<UpdatePasswordCommandRequest, UpdatePasswordCommandResponse>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<UserEntity> _userManager;
         private readonly TokenUtility _tokenUtility;
 
-        public UpdatePasswordCommandHandler(IUserRepository userRepository, TokenUtility tokenUtility)
+        public UpdatePasswordCommandHandler(UserManager<UserEntity> userManager, TokenUtility tokenUtility)
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
             _tokenUtility = tokenUtility;
         }
 
-        public Task<UpdatePasswordCommandResponse> Handle(UpdatePasswordCommandRequest request, CancellationToken cancellationToken)
+        public async Task<UpdatePasswordCommandResponse> Handle(UpdatePasswordCommandRequest request, CancellationToken cancellationToken)
         {
-            int userID = _tokenUtility.DecodeTokenInRequest().UserID;
+            string userID = _tokenUtility.DecodeTokenInRequest().UserID;
 
-            UserEntity userEntity = _userRepository.GetByID(userID) ?? throw new ClientSideException(ExceptionConstants.NotFoundUser);
-            if (userEntity.PasswordHash != EncryptionHelper.Encrypt(request.CurrentPassword)) return Task.FromResult(new UpdatePasswordCommandResponse(ResponseConstants.CurrentPasswordIncorrect));
+            UserEntity userEntity = await _userManager.FindByIdAsync(userID) ?? throw new ClientSideException(ExceptionConstants.NotFoundUser);
 
-            userEntity.PasswordHash = EncryptionHelper.Encrypt(request.NewPassword);
-            _userRepository.Update(userEntity);
+            bool passwordsIsMatch = await _userManager.CheckPasswordAsync(userEntity, request.CurrentPassword);
 
-            int effectedRows = _userRepository.SaveChanges();
-            if (effectedRows == 0) return Task.FromResult(new UpdatePasswordCommandResponse(ResponseConstants.UpdateFailed));
+            if (passwordsIsMatch == false) return await Task.FromResult(new UpdatePasswordCommandResponse(ResponseConstants.CurrentPasswordIncorrect));
 
-            return Task.FromResult(new UpdatePasswordCommandResponse(ResponseConstants.SuccessfullyUpdated));
+            IdentityResult result = await _userManager.ChangePasswordAsync(userEntity, request.CurrentPassword, request.NewPassword);
+
+            return await Task.FromResult(new UpdatePasswordCommandResponse(result.Succeeded
+                    ? ResponseConstants.SuccessfullyUpdated
+                    : ResponseConstants.UpdateFailed));
         }
     }
 }

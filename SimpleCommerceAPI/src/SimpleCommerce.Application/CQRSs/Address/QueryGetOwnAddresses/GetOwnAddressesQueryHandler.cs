@@ -22,7 +22,7 @@ namespace SimpleCommerce.Application.CQRSs.Address.QueryGetOwnAddresses
 
         public Task<GetOwnAddressesQueryResponse> Handle(GetOwnAddressesQueryRequest request, CancellationToken cancellationToken)
         {
-            int userID = _tokenUtility.DecodeTokenInRequest().UserID;
+            string userID = _tokenUtility.DecodeTokenInRequest().UserID;
 
             IEnumerable<AddressEntity> addresses = _addressRepository.GetAllByUserID(userID);
 

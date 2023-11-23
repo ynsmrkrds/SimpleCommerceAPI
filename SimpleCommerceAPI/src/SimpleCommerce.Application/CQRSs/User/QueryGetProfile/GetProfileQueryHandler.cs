@@ -1,33 +1,33 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SimpleCommerce.Application.DTOs.User;
 using SimpleCommerce.Application.Utilities.Token;
 using SimpleCommerce.Domain.Entities.User;
-using SimpleCommerce.Domain.Repositories.User;
 
 namespace TransportGlobal.Application.CQRSs.UserContextCQRSs.QueryGetProfile
 {
     public class GetProfileQueryHandler : IRequestHandler<GetProfileQueryRequest, GetProfileQueryResponse>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<UserEntity> _userManager;
         private readonly IMapper _mapper;
         private readonly TokenUtility _tokenUtility;
 
-        public GetProfileQueryHandler(IUserRepository userRepository, IMapper mapper, TokenUtility tokenUtility)
+        public GetProfileQueryHandler(UserManager<UserEntity> userManager, IMapper mapper, TokenUtility tokenUtility)
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
             _mapper = mapper;
             _tokenUtility = tokenUtility;
         }
 
-        public Task<GetProfileQueryResponse> Handle(GetProfileQueryRequest request, CancellationToken cancellationToken)
+        public async Task<GetProfileQueryResponse> Handle(GetProfileQueryRequest request, CancellationToken cancellationToken)
         {
-            int userID = _tokenUtility.DecodeTokenInRequest().UserID;
+            string userID = _tokenUtility.DecodeTokenInRequest().UserID;
 
-            UserEntity userEntity = _userRepository.GetByID(userID)!;
+            UserEntity userEntity = (await _userManager.FindByIdAsync(userID))!;
             UserDTO userDTO = _mapper.Map<UserDTO>(userEntity);
 
-            return Task.FromResult(new GetProfileQueryResponse(userDTO));
+            return await Task.FromResult(new GetProfileQueryResponse(userDTO));
         }
     }
 }

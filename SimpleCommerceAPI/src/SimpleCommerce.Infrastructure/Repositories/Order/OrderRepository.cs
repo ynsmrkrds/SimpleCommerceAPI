@@ -11,7 +11,7 @@ namespace SimpleCommerce.Infrastructure.Repositories.Order
         {
         }
 
-        public IEnumerable<OrderEntity> GetAllByUserID(int userID)
+        public IEnumerable<OrderEntity> GetAllByUserID(string userID)
         {
             return GetAll()
                 .Include(x => x.User)

@@ -1,38 +1,38 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SimpleCommerce.Application.Utilities.Token;
 using SimpleCommerce.Domain.Constants;
 using SimpleCommerce.Domain.Entities.User;
 using SimpleCommerce.Domain.Exceptions;
-using SimpleCommerce.Domain.Repositories.User;
 
 namespace TransportGlobal.Application.CQRSs.UserContextCQRSs.CommandUpdateUser
 {
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommandRequest, UpdateUserCommandResponse>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<UserEntity> _userManager;
         private readonly IMapper _mapper;
         private readonly TokenUtility _tokenUtility;
 
-        public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper, TokenUtility tokenUtility)
+        public UpdateUserCommandHandler(UserManager<UserEntity> userManager, IMapper mapper, TokenUtility tokenUtility)
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
             _mapper = mapper;
             _tokenUtility = tokenUtility;
         }
 
-        public Task<UpdateUserCommandResponse> Handle(UpdateUserCommandRequest request, CancellationToken cancellationToken)
+        public async Task<UpdateUserCommandResponse> Handle(UpdateUserCommandRequest request, CancellationToken cancellationToken)
         {
-            int userID = _tokenUtility.DecodeTokenInRequest().UserID;
+            string userID = _tokenUtility.DecodeTokenInRequest().UserID;
 
-            UserEntity userEntity = _userRepository.GetByID(userID) ?? throw new ClientSideException(ExceptionConstants.NotFoundUser);
+            UserEntity userEntity = await _userManager.FindByIdAsync(userID) ?? throw new ClientSideException(ExceptionConstants.NotFoundUser);
             _mapper.Map(request, userEntity);
-            _userRepository.Update(userEntity);
 
-            int effectedRows = _userRepository.SaveChanges();
-            if (effectedRows == 0) return Task.FromResult(new UpdateUserCommandResponse(ResponseConstants.UpdateFailed));
+            IdentityResult result = await _userManager.UpdateAsync(userEntity);
 
-            return Task.FromResult(new UpdateUserCommandResponse(ResponseConstants.SuccessfullyUpdated));
+            return await Task.FromResult(new UpdateUserCommandResponse(result.Succeeded
+                ? ResponseConstants.SuccessfullyUpdated
+                : ResponseConstants.UpdateFailed));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SimpleCommerce.Application.Utilities.Token.Abstract;
 using SimpleCommerce.Domain.Entities.User;
+using SimpleCommerce.Domain.Enums;
 
 namespace SimpleCommerce.Application.Utilities.Token
 {
@@ -12,14 +13,15 @@ namespace SimpleCommerce.Application.Utilities.Token
             _tokenHandler = tokenHandler;
         }
 
-        public string CreateToken(UserEntity userEntity)
+        public string CreateToken(UserEntity userEntity, UserRole role)
         {
             return _tokenHandler.CreateToken(
                 new TokenModel(
-                    userEntity.ID, 
-                    userEntity.Email, 
+                    userEntity.Id, 
+                    userEntity.Email!, 
                     userEntity.Name, 
-                    userEntity.Surname)
+                    userEntity.Surname,
+                    role)
                 );
         }
 

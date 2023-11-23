@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using SimpleCommerce.Application.Utilities.Token.Abstract;
 using SimpleCommerce.Domain.Constants;
 using SimpleCommerce.Domain.Entities.User;
+using SimpleCommerce.Domain.Enums;
 using SimpleCommerce.Domain.Exceptions;
 using SimpleCommerce.Domain.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,10 +28,11 @@ namespace SimpleCommerce.Application.Utilities.Token.Concrete
         {
             Claim[] claims = new[]
             {
-                new Claim("user_id", token.UserID.ToString()),
+                new Claim("user_id", token.UserID),
                 new Claim(JwtRegisteredClaimNames.Email, token.Email),
                 new Claim(JwtRegisteredClaimNames.Name, token.Name),
                 new Claim(JwtRegisteredClaimNames.FamilyName, token.Surname),
+                new Claim(ClaimTypes.Role, token.Role.Value())
             };
 
             SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_tokenConfiguration!.Key));
@@ -77,8 +79,9 @@ namespace SimpleCommerce.Application.Utilities.Token.Concrete
                 string email = jwtSecurityToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Email).Value;
                 string name = jwtSecurityToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.Name).Value;
                 string surname = jwtSecurityToken.Claims.First(x => x.Type == JwtRegisteredClaimNames.FamilyName).Value;
+                string role = jwtSecurityToken.Claims.First(x => x.Type == ClaimTypes.Role).Value;
 
-                return new TokenModel(int.Parse(userId), email, name, surname);
+                return new TokenModel(userId, email, name, surname, Enum.Parse<UserRole>(role));
             }
             catch (Exception)
             {

@@ -22,7 +22,7 @@ namespace SimpleCommerce.Application.CQRSs.Address.CommandCreateAddress
 
         public Task<CreateAddressCommandResponse> Handle(CreateAddressCommandRequest request, CancellationToken cancellationToken)
         {
-            int userID = _tokenUtility.DecodeTokenInRequest().UserID;
+            string userID = _tokenUtility.DecodeTokenInRequest().UserID;
 
             if (_addressRepository.IsExistsWithSameTitle(request.Title, userID)) return Task.FromResult(new CreateAddressCommandResponse(ResponseConstants.ExistsAddressWithSameTitle));
 

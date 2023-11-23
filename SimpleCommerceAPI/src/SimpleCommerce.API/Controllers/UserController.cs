@@ -1,9 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SimpleCommerce.API.Expansions.Attributes;
+using SimpleCommerce.Application.CQRSs.User.CommandChangeUserStatus;
 using SimpleCommerce.Application.CQRSs.User.CommandCreateUser;
 using SimpleCommerce.Application.CQRSs.User.QueryGetToken;
+using SimpleCommerce.Application.CQRSs.User.QueryGetUsers;
+using SimpleCommerce.Domain.Enums;
+using SimpleCommerce.Domain.Models;
 using TransportGlobal.API.Controllers;
 using TransportGlobal.Application.CQRSs.UserContextCQRSs.CommandUpdatePassword;
 using TransportGlobal.Application.CQRSs.UserContextCQRSs.CommandUpdateUser;
@@ -19,6 +23,15 @@ namespace SimpleCommerce.API.Controllers
         public UserController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("{page}/{size}")]
+        [Authorization(new UserRole[] { UserRole.Admin })]
+        public async Task<IActionResult> GetAll(int page, int size)
+        {
+            GetUsersQueryResponse queryResponse = await _mediator.Send(new GetUsersQueryRequest(new PaginationModel(page, size)));
+            return CreateActionResult(queryResponse);
         }
 
         [HttpGet]
@@ -62,6 +75,15 @@ namespace SimpleCommerce.API.Controllers
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordCommandRequest request)
         {
             UpdatePasswordCommandResponse commandResponse = await _mediator.Send(request);
+            return CreateActionResult(commandResponse.Response);
+        }
+
+        [HttpPut]
+        [Route("changeUserStatus")]
+        [Authorization(new UserRole[] { UserRole.Admin })]
+        public async Task<IActionResult> ChangeUserStatus([FromBody] ChangeUserStatusCommandRequest request)
+        {
+            ChangeUserStatusCommandResponse commandResponse = await _mediator.Send(request);
             return CreateActionResult(commandResponse.Response);
         }
     }

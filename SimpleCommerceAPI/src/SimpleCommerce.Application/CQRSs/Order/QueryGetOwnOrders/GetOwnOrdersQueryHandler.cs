@@ -22,7 +22,7 @@ namespace SimpleCommerce.Application.CQRSs.Order.QueryGetOwnOrders
 
         public Task<GetOwnOrdersQueryResponse> Handle(GetOwnOrdersQueryRequest request, CancellationToken cancellationToken)
         {
-            int userID = _tokenUtility.DecodeTokenInRequest().UserID;
+            string userID = _tokenUtility.DecodeTokenInRequest().UserID;
 
             IEnumerable<OrderEntity> orders = _orderRepository.GetAllByUserID(userID);
 

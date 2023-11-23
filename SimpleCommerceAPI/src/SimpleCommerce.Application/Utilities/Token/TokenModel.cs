@@ -1,8 +1,10 @@
-﻿namespace SimpleCommerce.Application.Utilities.Token
+﻿using SimpleCommerce.Domain.Enums;
+
+namespace SimpleCommerce.Application.Utilities.Token
 {
     public class TokenModel
     {
-        public int UserID { get; set; }
+        public string UserID { get; set; }
 
         public string Email { get; set; }
 
@@ -10,12 +12,15 @@
 
         public string Surname { get; set; }
 
-        public TokenModel(int userID, string email, string name, string surname)
+        public UserRole Role { get; set; }
+
+        public TokenModel(string userID, string email, string name, string surname, UserRole role)
         {
             UserID = userID;
             Email = email;
             Name = name;
             Surname = surname;
+            Role = role;
         }
     }
 }

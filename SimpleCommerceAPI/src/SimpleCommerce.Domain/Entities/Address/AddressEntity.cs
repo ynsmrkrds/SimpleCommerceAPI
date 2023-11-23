@@ -9,7 +9,7 @@ namespace SimpleCommerce.Domain.Entities.Address
     public class AddressEntity : BaseEntity
     {
         [ForeignKey(nameof(User))]
-        public int UserID { get; set; }
+        public string UserID { get; set; }
 
         public UserEntity? User { get; set; }
 
@@ -30,7 +30,7 @@ namespace SimpleCommerce.Domain.Entities.Address
 
         public List<OrderEntity> Orders { get; set; } = new List<OrderEntity>();
 
-        public AddressEntity(int userID, string title, string city, string district, string street, string address)
+        public AddressEntity(string userID, string title, string city, string district, string street, string address)
         {
             UserID = userID;
             Title = title;

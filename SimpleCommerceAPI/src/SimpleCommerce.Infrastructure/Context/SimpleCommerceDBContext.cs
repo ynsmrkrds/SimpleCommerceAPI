@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using SimpleCommerce.Domain.Entities.Address;
 using SimpleCommerce.Domain.Entities.Order;
@@ -8,12 +10,8 @@ using System.Reflection;
 
 namespace TransportGlobal.Infrastructure.Context
 {
-    public class SimpleCommerceDBContext : DbContext
+    public class SimpleCommerceDBContext : IdentityDbContext<UserEntity>
     {
-        #region User Bounded Context DbSets 
-        public DbSet<UserEntity> Users { get; set; }
-        #endregion
-
         #region Product Bounded Context DbSets 
         public DbSet<ProductEntity> Products { get; set; }
 

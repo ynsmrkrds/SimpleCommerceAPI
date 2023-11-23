@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using SimpleCommerce.API.Expansions.Attributes;
+using SimpleCommerce.Domain.Enums;
 using SimpleCommerce.Domain.Models;
 using System.Net;
 using TransportGlobal.Application.DTOs.ResponseDTOs;
@@ -8,7 +9,7 @@ namespace TransportGlobal.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorization(new UserRole[] { UserRole.User, UserRole.Admin })]
     public class BaseController : ControllerBase
     {
         [NonAction]

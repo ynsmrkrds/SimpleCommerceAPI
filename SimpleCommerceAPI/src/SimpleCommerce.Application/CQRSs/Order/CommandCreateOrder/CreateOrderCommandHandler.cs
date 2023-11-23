@@ -25,7 +25,7 @@ namespace SimpleCommerce.Application.CQRSs.Order.CommandCreateOrder
 
         public Task<CreateOrderCommandResponse> Handle(CreateOrderCommandRequest request, CancellationToken cancellationToken)
         {
-            int userID = _tokenUtility.DecodeTokenInRequest().UserID;
+            string userID = _tokenUtility.DecodeTokenInRequest().UserID;
 
             OrderEntity orderEntity = new(userID, request.AddressID);
             orderEntity = _orderRepository.Add(orderEntity);

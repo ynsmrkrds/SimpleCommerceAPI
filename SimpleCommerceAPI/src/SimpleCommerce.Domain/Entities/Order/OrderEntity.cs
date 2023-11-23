@@ -8,7 +8,7 @@ namespace SimpleCommerce.Domain.Entities.Order
     public class OrderEntity : BaseEntity
     {
         [ForeignKey(nameof(User))]
-        public int UserID { get; set; }
+        public string UserID { get; set; }
 
         public UserEntity? User { get; set; }
 
@@ -19,7 +19,7 @@ namespace SimpleCommerce.Domain.Entities.Order
 
         public List<OrderItemEntity> Items { get; set; } = new List<OrderItemEntity>();
 
-        public OrderEntity(int userID, int addressID)
+        public OrderEntity(string userID, int addressID)
         {
             UserID = userID;
             AddressID = addressID;

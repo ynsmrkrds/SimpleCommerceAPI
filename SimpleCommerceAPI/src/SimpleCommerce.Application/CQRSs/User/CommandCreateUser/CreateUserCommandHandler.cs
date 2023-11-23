@@ -1,33 +1,36 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using SimpleCommerce.Domain.Constants;
 using SimpleCommerce.Domain.Entities.User;
-using SimpleCommerce.Domain.Repositories.User;
+using SimpleCommerce.Domain.Enums;
 
 namespace SimpleCommerce.Application.CQRSs.User.CommandCreateUser
 {
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommandRequest, CreateUserCommandResponse>
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserManager<UserEntity> _userManager;
         private readonly IMapper _mapper;
 
-        public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+        public CreateUserCommandHandler(UserManager<UserEntity> userManager, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
-        public Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
+        public async Task<CreateUserCommandResponse> Handle(CreateUserCommandRequest request, CancellationToken cancellationToken)
         {
-            if (_userRepository.IsExistsWithSameEmail(request.Email)) return Task.FromResult(new CreateUserCommandResponse(ResponseConstants.ExistsUserWithSameEmail));
+            if (_userManager.Users.Any(u => u.Email == request.Email)) return await Task.FromResult(new CreateUserCommandResponse(ResponseConstants.ExistsUserWithSameEmail));
 
-            UserEntity userEntity = _mapper.Map<UserEntity>(request);
-            _userRepository.Add(userEntity);
+            UserEntity userEntity = _mapper.Map<UserEntity>(request);            
 
-            int effectedRows = _userRepository.SaveChanges();
-            if (effectedRows == 0) return Task.FromResult(new CreateUserCommandResponse(ResponseConstants.CreateFailed));
+            IdentityResult result = await _userManager.CreateAsync(userEntity, request.Password);
 
-            return Task.FromResult(new CreateUserCommandResponse(ResponseConstants.SuccessfullyCreated));
+            await _userManager.AddToRoleAsync(userEntity, UserRole.User.Value());
+
+            return await Task.FromResult(new CreateUserCommandResponse(result.Succeeded
+                    ? ResponseConstants.SuccessfullyCreated
+                    : ResponseConstants.CreateFailed));
         }
     }
 }

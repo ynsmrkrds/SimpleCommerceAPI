@@ -10,14 +10,14 @@ namespace SimpleCommerce.Infrastructure.Repositories.Address
         {
         }
 
-        public bool IsExistsWithSameTitle(string title, int userID)
+        public bool IsExistsWithSameTitle(string title, string userID)
         {
             return GetAll()
                 .Where(x => x.UserID == userID)
                 .Any(x => x.Title == title);
         }
 
-        public IEnumerable<AddressEntity> GetAllByUserID(int userID)
+        public IEnumerable<AddressEntity> GetAllByUserID(string userID)
         {
             return GetAll()
                 .Where(x => x.UserID == userID);
