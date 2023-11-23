@@ -14,6 +14,7 @@ This project aims to create a simple e-commerce api, developed using the ASP.NET
 
 - C# programming language
 - ASP.NET Core Web API
+- ASP.NET Core Identity
 - MSSQL for database
 - DDD for backend architecuture
 - Entity Framework Core for ORM
